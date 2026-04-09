@@ -2,6 +2,8 @@
 
 CREATE DATABASE IF NOT EXISTS qa_test_db;
 
+USE qa_test_db;
+
 CREATE TABLE Users (
     id             INT PRIMARY KEY AUTO_INCREMENT,
     username       VARCHAR(50)  NOT NULL,
