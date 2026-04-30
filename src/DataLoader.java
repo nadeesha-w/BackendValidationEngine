@@ -14,9 +14,9 @@ public class DataLoader {
 
             while ((line = reader.readLine()) != null) {
                 String[] columns = line.split(",");
-                int id = Integer.parseInt(columns[1]);
-                String username = columns[2];
-                String expectedStatus = columns[3];
+                int id = Integer.parseInt(columns[0]);
+                String username = columns[1];
+                String expectedStatus = columns[2];
                 users.add(new User(id, username, expectedStatus));
             }
         } catch (IOException e) {
