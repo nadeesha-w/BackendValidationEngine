@@ -1,5 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseManager {
@@ -17,5 +19,21 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return conn;
+    }
+
+    public static String getUserStatus(int userId) {
+        String status = "";
+        Connection conn = connect();
+        try {
+            String query = "SELECT account_status FROM Users WHERE id = " + userId;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                status = rs.getString("account_status");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
     }
 }
