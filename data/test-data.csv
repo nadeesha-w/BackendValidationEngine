@@ -1,0 +1,4 @@
+id,username,expected_status
+1,nimali_p,ACTIVE
+2,sahan_k,PENDING
+3,dilini_r,PENDING
