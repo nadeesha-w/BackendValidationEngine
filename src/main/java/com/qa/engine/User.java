@@ -1,3 +1,5 @@
+package com.qa.engine;
+
 public class User {
 
     private int id;
