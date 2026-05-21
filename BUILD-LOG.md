@@ -183,3 +183,70 @@ The "because" and the struggle are the parts worth writing down.
   number so this exact line is hard to attack, but the habit protects the next
   query that carries user text. "It works" is not the same as "it is safe" — that
   gap is the whole point of review.
+
+---
+
+## Entry: 7 May — Moving the project to Maven
+
+**Decisions**
+- Migrated to the Maven layout (`src/main/java`, `src/test/java`) and wrote a
+  `pom.xml` with the MySQL connector and JUnit as dependencies.
+
+**Challenges**
+- My imports broke the moment the files moved, and I did not understand why until
+  I matched each package name to its folder path.
+
+**Solutions**
+- Reloaded the Maven project in IntelliJ and the imports resolved.
+
+**Learnings**
+- Maven fetches dependencies from a `pom.xml` "shopping list" instead of me
+  downloading JAR files by hand. That is what stops the "works on my machine"
+  problem when I push to GitHub.
+
+---
+
+## Entry: 12 May — My first JUnit tests
+
+**Decisions**
+- Wrote `DatabaseValidationTest`: one `@Test` that just prints to confirm the
+  runner works, then `validateUserStatusUpdate` that loads the CSV, queries the
+  database, and asserts expected equals actual.
+
+**Challenges**
+- IntelliJ did not see the JUnit import at first (a Maven reload issue). Then I
+  deliberately changed the DB status to SUSPENDED to watch a test fail.
+
+**Solutions**
+- Reloaded the pom to fix the import. The failing run showed me the exact
+  mismatch, expected vs actual — seeing it go red on purpose made the whole point
+  click.
+
+**Learnings**
+- `@Test` is a label the framework reads. `assertEquals(expected, actual)` passes
+  silently or reports both values on failure. Same test logic, different data from
+  the CSV — that is data-driven testing.
+
+---
+
+## Entry: 21 May — A status-transition validator
+
+**Decisions**
+- Added `StatusValidator.isValidTransition(from, to)` — a small pure function
+  (PENDING to ACTIVE is valid, the reverse is not). Wrote it so I could unit-test
+  real logic without needing the database running.
+
+**Challenges**
+- My existing test needs MySQL up and the data seeded. I wanted at least some
+  tests that run anywhere, instantly.
+
+**Solutions**
+- Wrote four tests — valid, reverse-rejected, unknown-status-rejected, and
+  null-safe — and added the JUnit engine plus the Surefire plugin so `mvn test`
+  runs them from the terminal, not just in the IDE. Added the exec plugin at the
+  same time so `mvn exec:java` runs the manual runner.
+
+**Learnings**
+- A pure function is the easiest thing in the world to test: no database, no
+  setup, just arrange, act, assert. And the null check is one line — the null test
+  proves it holds, and I can watch it go red if I remove the guard.
