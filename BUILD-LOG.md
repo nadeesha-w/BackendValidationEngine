@@ -250,3 +250,106 @@ The "because" and the struggle are the parts worth writing down.
 - A pure function is the easiest thing in the world to test: no database, no
   setup, just arrange, act, assert. And the null check is one line — the null test
   proves it holds, and I can watch it go red if I remove the guard.
+
+---
+
+## Entry: 26 May — The M6 refactor, finally
+
+**Decisions**
+- Went back to `DatabaseManager` and did both fixes I have been flagging since
+  April: try-with-resources for the connection, and the parameterized query.
+  One branch, `refactor/m6-connection-and-query`, both fixes together because
+  they touch the same method.
+
+**Challenges**
+- try-with-resources meant restructuring `getUserStatus` more than I expected,
+  because the connection, the statement, and the result set all need to be
+  declared in the same try. Got a compile error first because I swapped
+  `Statement` for `PreparedStatement` and forgot the type changes too.
+
+**Solutions**
+- Declared all three resources in one try block. Changed the query string to
+  `WHERE id = ?` with `stmt.setInt(1, userId)`. Ran `mvn test` and everything
+  stayed green, which is the first time my tests actually protected me during a
+  refactor.
+
+**Learnings**
+- try-with-resources works on anything that implements `AutoCloseable`, which is
+  why `Connection`, `PreparedStatement` and `ResultSet` all fit in it.
+- A parameterized query gets compiled first and the data goes in afterwards. That
+  is the actual reason injection stops working, not just "it is safer".
+- I read both of these weeks ago in the review notes. Doing them is a completely
+  different thing from reading them.
+
+---
+
+## Entry: 28 May — README, with help from Prompt #8
+
+**Decisions**
+- Wrote the README last on purpose, because only now do I actually understand
+  what the project is well enough to explain it in one sentence.
+
+**Challenges**
+- My first attempt was a wall of text about Java and JDBC. Nobody cares about
+  that. And I could not judge whether a stranger would understand it, because I
+  am not a stranger to it.
+
+**Solutions**
+- Ran the README Generator with the project and this build log as the input, then
+  rewrote about half of the output in my own words. Cut two features it described
+  that I never built. Then I gave it to a friend who does not write Java and asked
+  her what the project does. She got it right.
+
+**Learnings**
+- The AI gave me a good structure and some wrong facts, both in the same output.
+  The structure saved me an hour. The wrong facts would have cost me an interview.
+  Reading it properly is the real work.
+- A README is written for someone who has never seen the project, and I am the
+  worst possible judge of that. Ask an actual stranger.
+
+---
+
+## Entry: 30 May — Running the completion checklist
+
+**Decisions**
+- Went through the six completion items honestly instead of just deciding it felt
+  finished.
+
+**Challenges**
+- My `.gitignore` was right from the first commit, but my database username and
+  password were still sitting in `DatabaseManager.java`. They had been there since
+  April and I never noticed.
+- Two commits near the start say "wip" and "fix". I cannot rewrite those now
+  without rewriting history I already pushed.
+
+**Solutions**
+- Moved the credentials into a config file, added it to `.gitignore`, and
+  committed a `config.example` so someone else knows what to fill in.
+- Left the two bad commit messages alone and made sure everything after them is a
+  proper `type: description`.
+
+**Learnings**
+- I had committed a database password and not noticed for two months. It was only
+  a local test database, but the habit is the problem, and the habit is what I
+  carry to a real one.
+- "Clean from here on" is a real answer. You cannot fix everything retroactively,
+  and pretending otherwise is how people waste a day rewriting git history.
+
+---
+
+## Where I landed
+
+Project 1 is done. Not perfect, done. The engine works end to end: CSV in,
+database queried, assertion checked, and a pure-logic validator with its own
+tests, all running from `mvn test`. The refactor I flagged for six weeks is
+merged, the README passes the thirty-second test, the credentials are out of the
+repo, and the six completion items pass.
+
+The thing I did not expect is how much this file did for me. It was my finishing
+list when I could not remember what was left. It was the input for the README.
+And every "Learnings" line in here is a paragraph I lifted straight into my
+article. I wrote it because I was told to. I would keep it now without being
+told.
+
+Next up is Project 2, and the first thing I am doing differently is writing the
+config file on day one instead of day sixty.
