@@ -4,6 +4,9 @@
 # Maven build output
 target/
 
+# Local configuration — never commit real credentials
+src/main/resources/config.properties
+
 # Logs
 *.log
 
