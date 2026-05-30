@@ -10,13 +10,14 @@ import java.sql.SQLException;
  * Manages JDBC connections and SQL queries for the Backend Validation Engine.
  *
  * Provides methods to connect to a MySQL database and query user account
- * status for automated state transition validation.
+ * status for automated state transition validation. Connection details are
+ * read from config.properties, which is not committed to the repository.
  */
 public class DatabaseManager {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/qa_test_db";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "mypassword123";
+    private static final String DB_URL = DatabaseConfig.get("db.url");
+    private static final String DB_USER = DatabaseConfig.get("db.user");
+    private static final String DB_PASSWORD = DatabaseConfig.get("db.password");
 
     /**
      * Establish a JDBC connection to the QA test database.
