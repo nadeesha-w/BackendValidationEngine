@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Data-driven validation of database state transitions.
@@ -30,5 +31,17 @@ public class DatabaseValidationTest {
             assertEquals(user.getExpectedStatus(), actual,
                     "Status mismatch for user " + user.getUsername());
         }
+    }
+
+    @Test
+    public void unknownUserReturnsNull() {
+        assertNull(DatabaseManager.getUserStatus(9999),
+                "A user id that does not exist should come back as null, not an empty string");
+    }
+
+    @Test
+    public void testDataFileLoadsEveryScenario() {
+        List<User> users = DataLoader.loadUsers(TEST_DATA);
+        assertEquals(3, users.size(), "Expected three scenarios in " + TEST_DATA);
     }
 }
