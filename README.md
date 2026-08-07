@@ -58,7 +58,7 @@ This prints the expected and actual status for every scenario in `data/test-data
 mvn test
 ```
 
-`StatusValidatorTest` runs anywhere with no setup. `DatabaseValidationTest` needs MySQL running and seeded, and will fail without it. All six tests should pass green once the database is in place.
+`StatusValidatorTest` runs anywhere with no setup. `DatabaseValidationTest` needs MySQL running and seeded, and will fail without it. All eight tests should pass green once the database is in place.
 
 ## Project Structure
 
@@ -101,7 +101,7 @@ BackendValidationEngine/
 ## Roadmap / Future Improvements
 
 - [ ] Run the test suite automatically on every push with GitHub Actions
-- [ ] Add negative-path tests for users that do not exist
+- [x] Add negative-path tests for users that do not exist
 - [ ] Validate full transition chains, not just a single status read
 - [ ] Replace the hand-rolled CSV parsing with a proper library
 
