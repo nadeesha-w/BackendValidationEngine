@@ -1,5 +1,7 @@
 # Data-Driven Backend Validation Engine
 
+[![Build and test](https://github.com/nadeesha-w/BackendValidationEngine/actions/workflows/maven.yml/badge.svg)](https://github.com/nadeesha-w/BackendValidationEngine/actions/workflows/maven.yml)
+
 A Java test utility that reads user scenarios from a CSV file, queries a MySQL database, and asserts that account status transitions actually happened.
 
 ## About
@@ -100,7 +102,7 @@ BackendValidationEngine/
 
 ## Roadmap / Future Improvements
 
-- [ ] Run the test suite automatically on every push with GitHub Actions
+- [x] Run the test suite automatically on every push with GitHub Actions
 - [ ] Add negative-path tests for users that do not exist
 - [ ] Validate full transition chains, not just a single status read
 - [ ] Replace the hand-rolled CSV parsing with a proper library
